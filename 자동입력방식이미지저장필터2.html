@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+ <meta charset="UTF-8">
+ <title>가보자고</title>
+
+    <style>
+
+ul
+{
+  margin:0;
+  padding:0;
+  text-align:center;
+}
+
+li
+{
+  list-style:none;
+  display:inline-block;
+
+}
+
+#lika-a-picrew
+{
+  position:relative;
+  width:600px;
+}
+
+#lika-a-picrew a
+{
+  cursor:pointer;
+}
+
+#part-container
+{
+  position:absolute;
+  z-index:99;
+  right:0;
+  top:0;
+  width:160px;
+  display:none;
+}
+
+#part-container li
+{
+  display:none;
+}
+
+#part-container li img
+{
+  max-width:100%;
+}
+
+#source-container
+{
+  position:relative;
+}
+
+#source-container .part-on
+{
+  position:absolute;
+}
+
+/*여기는 예제용 css*/
+ul
+{
+    background:skyblue;
+}
+
+li
+{
+  padding:12px;
+  width:36px;
+  text-align:center;
+  background:white;
+  border-radius:4px;
+  margin:4px;
+}
+
+.chara-base
+{
+  z-index:-1;
+}
+
+.chara-hair
+{
+  z-index:60;
+  top:0;
+  left:0;
+}
+
+.chara-hairline
+{
+  z-index:61;
+  top:0;
+  left:0;
+}
+
+
+.chara-eyes
+{
+  z-index:40;
+  top:0;
+  left:0;
+}
+
+.chara-eyesline
+{
+  z-index:41;
+  top:0;
+  left:0;
+}
+
+
+    </style>
+ </head>
+
+<body>
+
+<div id="lika-a-picrew">
+
+  <div id="source-container">
+    <img class="chara-base" src="./img/base_01.png"/>
+    <img data-value="hair" class="chara-hair part-on chara-parts" src="./img/hair_01.png">
+    <img data-value="hairline" class="chara-hairline part-on chara-parts" src="./img/hairline_01.png">
+    <img data-value="eyes" class="chara-eyes part-on chara-parts" src="./img/eyes_01.png">
+    <img data-value="eyesline" class="chara-eyesline part-on chara-parts" src="./img/eyesline_01.png">
+  </div>
+
+  <ul id="part-ui"> <!-- 파트 목록 출력 UI -->
+    <li><a class="hair">머리</a></li>
+    <li><a class="eyes">눈</a></li>
+  </ul>
+
+  <ul id="part-container"> <!-- 파트 내용 출력 UI -->
+    <li class="hair">
+       <!-- 파일의 최대 수에 따라 버튼을 자동 생성 -->
+       <script>
+          const maxHairCount = 2; // 파일의 최대 수
+          for (let i = 1; i <= maxHairCount; i++) {
+              document.write(`
+                  <button class="thumbnail hair-btn" data-part="hair" data-src1="./img/hair_0${i}.png" data-src2="./img/hairline_0${i}.png">
+                      <img src="./img/hairnail_0${i}.png"/>
+                  </button>
+              `);
+          }
+       </script>
+    </li>
+ <!-- hair 필터 버튼 -->
+    <li class="hair">
+       <button class="hair-red">빨강</button>
+       <button class="hair-blue">파랑</button>
+       <button class="hair-yellow">노랑</button>
+    </li>
+
+    <li class="eyes">
+       <!-- 파일의 최대 수에 따라 버튼을 자동 생성 -->
+       <script>
+          const maxEyesCount = 2; // 파일의 최대 수
+          for (let i = 1; i <= maxEyesCount; i++) {
+              document.write(`
+                  <button class="thumbnail eyes-btn" data-part="eyes" data-src1="./img/eyes_0${i}.png" data-src2="./img/eyesline_0${i}.png">
+                      <img src="./img/eyesnail_0${i}.png"/>
+                  </button>
+              `);
+          }
+       </script>
+      </li>
+       <!-- eyes 필터 버튼 -->
+     <li class="eyes"> 
+       <button class="eyes-red">빨강</button>
+       <button class="eyes-green">초록</button>
+    </li>
+
+
+  </ul>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
+
+
+<script>
+// 현재 선택된 파트를 추적
+let currentPart = 'hair';
+
+// 파트 버튼 클릭 이벤트
+$("#part-ui a").on("click", function() {
+  $("#part-container li").hide();  // 모든 파트를 숨깁니다.
+  $("#part-container").show();  // 파트 컨테이너를 보여줍니다.
+  var clss = $(this).attr("class");  // 클릭된 항목의 클래스를 가져옵니다.
+  currentPart = clss; // 현재 선택된 파트를 업데이트합니다.
+  $("#part-container ." + clss).show();  // 해당 클래스에 맞는 파트를 보여줍니다.
+});
+
+$("#part-container").on("click", ".hair-btn", function() {
+  var newSrc1 = $(this).data("src1");  // 썸네일의 첫 번째 src 값을 가져옵니다.
+  var newSrc2 = $(this).data("src2");  // 썸네일의 두 번째 src 값을 가져옵니다;
+  
+  // source-container의 hair와 hairline 이미지 소스를 변경합니다.
+  $("#source-container img.chara-hair").attr("src", newSrc1);
+  $("#source-container img.chara-hairline").attr("src", newSrc2);
+});
+
+$("#part-container").on("click", ".eyes-btn", function() {
+  var newSrc1 = $(this).data("src1");  // 썸네일의 첫 번째 src 값을 가져옵니다.
+  var newSrc2 = $(this).data("src2");  // 썸네일의 두 번째 src 값을 가져옵니다.
+  
+  // source-container의 eyes와 eyesline 이미지 소스를 변경합니다.
+  $("#source-container img.chara-eyes").attr("src", newSrc1);
+  $("#source-container img.chara-eyesline").attr("src", newSrc2);
+});
+
+// hair 필터 버튼 클릭 이벤트
+$("button.hair-red").on("click", function() {
+  $("#source-container img.chara-hair").css("filter", "brightness(0) saturate(100%) invert(19%) sepia(81%) saturate(2742%) hue-rotate(349deg) brightness(103%) contrast(95%)");
+});
+
+$("button.hair-blue").on("click", function() {
+  $("#source-container img.chara-hair").css("filter", "brightness(0) saturate(100%) invert(46%) sepia(16%) saturate(2223%) hue-rotate(184deg) brightness(85%) contrast(85%)");
+});
+
+$("button.hair-yellow").on("click", function() {
+  $("#source-container img.chara-hair").css("filter", "brightness(0) saturate(100%) invert(92%) sepia(48%) saturate(628%) hue-rotate(360deg) brightness(101%) contrast(104%)");
+});
+
+// eyes 필터 버튼 클릭 이벤트
+$("button.eyes-red").on("click", function() {
+  $("#source-container img.chara-eyes").css("filter", "brightness(0) saturate(100%) invert(19%) sepia(81%) saturate(2742%) hue-rotate(349deg) brightness(103%) contrast(95%)");
+});
+
+$("button.eyes-green").on("click", function() {
+  $("#source-container img.chara-eyes").css("filter", "brightness(0) saturate(100%) invert(64%) sepia(94%) saturate(2108%) hue-rotate(85deg) brightness(95%) contrast(98%)");
+});
+
+
+
+</script>
+
+<button id="capture-btn">이미지로 저장</button>
+
+<script>
+// 이미지로 저장하는 함수
+function captureAndSave() {
+    // source-container를 캡처합니다.
+    html2canvas(document.getElementById("source-container"), {
+        useCORS: true, // CORS 이슈를 해결하기 위해 useCORS 옵션을 추가합니다.
+        logging: true, // 문제가 있을 경우 콘솔에 로그를 출력합니다.
+        onrendered: function(canvas) {
+            // Canvas를 이미지로 변환합니다.
+            var ctx = canvas.getContext('2d');
+
+            // 필터 적용
+            ctx.filter = "brightness(0) saturate(100%) invert(19%) sepia(81%) saturate(2742%) hue-rotate(349deg) brightness(103%) contrast(95%)";
+
+            // 필터가 적용된 캔버스를 이미지로 변환합니다.
+            var filteredImgData = canvas.toDataURL('image/png');
+
+            // 필터가 적용된 이미지를 다운로드합니다.
+            var link = document.createElement('a');
+            link.download = 'filtered_character.png';
+            link.href = filteredImgData;
+            link.click();
+        }
+    });
+}
+
+// 이미지 저장 버튼 클릭 이벤트
+$("#capture-btn").on("click", function() {
+    captureAndSave();
+});
+</script>
+
+
+</body>
+
+
+</html>
