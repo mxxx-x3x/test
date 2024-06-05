@@ -246,17 +246,25 @@ function sample() {
         useCORS: true,
         onrendered: function(canvas) {
             canvas.toBlob(function(blob) {
-                saveAs(blob, 'download.png');
             });
         }
     });
 }
 
-// 이미지 변경 시 html2canvas 호출
-$("#part-container").on("click", "button", function() {
+$("button").on("click", function() {
     sample();
 });
 
+function capture() {
+    html2canvas(document.getElementById('source-container'), {
+        useCORS: true,
+        onrendered: function(canvas) {
+            canvas.toBlob(function(blob) {
+                saveAs(blob, 'download.png');
+            });
+        }
+    });
+}
 
 </script>
 
