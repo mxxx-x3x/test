@@ -250,9 +250,7 @@ function applyFilter(part, filter) {
 
 
    function capture() {
-        
- 
-            
+               
         html2canvas(document.getElementById('source-container'), {
             useCORS: true, // 다른사이트의리소스가있을때활성화(그러나...Access-Control-Allow-Origin 필요)
             onrendered: function(canvas) {
@@ -265,10 +263,21 @@ function applyFilter(part, filter) {
         });
     }
 
+function shareSNS(sns) {
+    const sendText = "이것은 트위터 공유 멘트입니다 #나나곰"
+    const sendUrl = "https://naver.com";
+    if (sns == "twitter") {
+        const url = "http://twitter.com/share?url=" + encodeURIComponent(sendUrl) + "&text=" + encodeURIComponent(sendText);
+        window.open(url, "tweetPop", "width=486, height=286,scrollbars=yes");
+    }
 
+}
+ 
+ 
 </script>
 
 <button class="button1" style="cursor:pointer" onclick="capture();"><strong>찰칵!</strong></button>
+<button onclick="shareSNS('twitter')">트위터로 공유</button>
 
 </body>
 </html>
