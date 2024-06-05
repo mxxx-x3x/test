@@ -242,8 +242,8 @@ $("button.eyes-green").on("click", function() {
 
 // 이미지 저장 기능
 function sample() {
-    // 이미지 변경 후 일정 시간 대기
-    setTimeout(function() {
+    // 필터가 적용된 이미지를 캡처하기 위해 필터 적용 후에 캡처
+    applyFilters(function() {
         html2canvas(document.getElementById('source-container'), {
             useCORS: true,
             onrendered: function(canvas) {
@@ -252,14 +252,39 @@ function sample() {
                 });
             }
         });
-    }, 500); // 0.5초 대기
+    });
+}
+
+// 필터 적용 함수
+function applyFilters(callback) {
+    // 필터 적용할 이미지 선택
+    var imagesToFilter = $("#source-container img");
+
+    // 모든 이미지에 필터 적용
+    imagesToFilter.each(function(index) {
+        // 필터 적용
+        applyFilter($(this));
+    });
+
+    // 필터 적용 후에 콜백 함수 호출
+    if (typeof callback === "function") {
+        callback();
+    }
+}
+
+// 필터 적용 함수
+function applyFilter(image) {
+    // 이미지에 적용된 필터 가져오기
+    var filter = image.css("filter");
+
+    // 이미지에 필터 적용
+    image.css("-webkit-filter", filter);
 }
 
 // 이미지 변경 시 html2canvas 호출
 $("#part-container").on("click", "button", function() {
     sample();
 });
-
 
 </script>
 
