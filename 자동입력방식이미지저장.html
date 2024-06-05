@@ -255,6 +255,10 @@ function sample() {
     }, 500); // 0.5초 대기
 }
 
+// 이미지 변경 시 html2canvas 호출
+$("#part-container").on("click", "button", function() {
+    sample();
+});
 
 
 </script>
