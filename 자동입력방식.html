@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+ <meta charset="UTF-8">
+ <title>가보자고</title>
+
+    <style>
+
+ul
+{
+  margin:0;
+  padding:0;
+  text-align:center;
+}
+
+li
+{
+  list-style:none;
+  display:inline-block;
+
+}
+
+#lika-a-picrew
+{
+  position:relative;
+  width:600px;
+}
+
+#lika-a-picrew a
+{
+  cursor:pointer;
+}
+
+#part-container
+{
+  position:absolute;
+  z-index:99;
+  right:0;
+  top:0;
+  width:160px;
+  display:none;
+}
+
+#part-container li
+{
+  display:none;
+}
+
+#part-container li img
+{
+  max-width:100%;
+}
+
+#source-container
+{
+  position:relative;
+}
+
+#source-container .part-on
+{
+  position:absolute;
+}
+
+/*여기는 예제용 css*/
+ul
+{
+    background:skyblue;
+}
+
+li
+{
+  padding:12px;
+  width:36px;
+  text-align:center;
+  background:white;
+  border-radius:4px;
+  margin:4px;
+}
+
+.chara-base
+{
+  z-index:-1;
+}
+
+.chara-hair
+{
+  z-index:60;
+  top:0;
+  left:0;
+}
+
+.chara-hairline
+{
+  z-index:61;
+  top:0;
+  left:0;
+}
+
+
+.chara-eyes
+{
+  z-index:40;
+  top:0;
+  left:0;
+}
+
+.chara-eyesline
+{
+  z-index:41;
+  top:0;
+  left:0;
+}
+
+
+    </style>
+ </head>
+
+<body>
+
+<div id="lika-a-picrew">
+
+  <div id="source-container">
+    <img class="chara-base" src="./img/base_01.png"/>
+    <img data-value="hair" class="chara-hair part-on chara-parts" src="./img/hair_01.png">
+    <img data-value="hairline" class="chara-hairline part-on chara-parts" src="./img/hairline_01.png">
+    <img data-value="eyes" class="chara-eyes part-on chara-parts" src="./img/eyes_01.png">
+    <img data-value="eyesline" class="chara-eyesline part-on chara-parts" src="./img/eyesline_01.png">
+  </div>
+
+  <ul id="part-ui"> <!-- 파트 목록 출력 UI -->
+    <li><a class="hair">머리</a></li>
+    <li><a class="eyes">눈</a></li>
+  </ul>
+
+  <ul id="part-container"> <!-- 파트 내용 출력 UI -->
+
+    <li class="hair">
+       <!-- 파일의 최대 수에 따라 버튼을 자동 생성 -->
+       <script>
+          const maxHairCount = 2; // 파일의 최대 수
+          for (let i = 1; i <= maxHairCount; i++) {
+              document.write(`
+                  <button class="thumbnail hair-btn" data-part="hair" data-src1="./img/hair_0${i}.png" data-src2="./img/hairline_0${i}.png">
+                      <img src="./img/hairnail_0${i}.png"/>
+                  </button>
+              `);
+          }
+       </script>
+    </li>
+    <li class="eyes">
+       <!-- 파일의 최대 수에 따라 버튼을 자동 생성 -->
+       <script>
+          const maxEyesCount = 2; // 파일의 최대 수
+          for (let i = 1; i <= maxEyesCount; i++) {
+              document.write(`
+                  <button class="thumbnail eyes-btn" data-part="eyes" data-src1="./img/eyes_0${i}.png" data-src2="./img/eyesline_0${i}.png">
+                      <img src="./img/eyesnail_0${i}.png"/>
+                  </button>
+              `);
+          }
+       </script>
+    </li>  
+
+  </ul>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script>
+// 파트 버튼 클릭 이벤트
+$("#part-ui a").on("click", function() {
+  $("#part-container li").hide();  // 모든 파트를 숨깁니다.
+  $("#part-container").show();  // 파트 컨테이너를 보여줍니다.
+  var clss = $(this).attr("class");  // 클릭된 항목의 클래스를 가져옵니다.
+  $("#part-container ." + clss).show();  // 해당 클래스에 맞는 파트만 보여줍니다.
+});
+
+$("#part-container").on("click", ".hair-btn", function() {
+  var newSrc1 = $(this).data("src1");  // 썸네일의 첫 번째 src 값을 가져옵니다.
+  var newSrc2 = $(this).data("src2");  // 썸네일의 두 번째 src 값을 가져옵니다.
+  
+  // source-container의 hair와 hairline 이미지 소스를 변경합니다.
+  $("#source-container img.chara-hair").attr("src", newSrc1);
+  $("#source-container img.chara-hairline").attr("src", newSrc2);
+});
+
+$("#part-container").on("click", ".eyes-btn", function() {
+  var newSrc1 = $(this).data("src1");  // 썸네일의 첫 번째 src 값을 가져옵니다.
+  var newSrc2 = $(this).data("src2");  // 썸네일의 두 번째 src 값을 가져옵니다.
+  
+  // source-container의 eyes와 eyesline 이미지 소스를 변경합니다.
+  $("#source-container img.chara-eyes").attr("src", newSrc1);
+  $("#source-container img.chara-eyesline").attr("src", newSrc2);
+});
+
+</script>
+
+</body>
+
+
+
+</html>

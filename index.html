@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+ <meta charset="UTF-8">
+ <title>가보자고</title>
+
+    <style>
+
+ul
+{
+  margin:0;
+  padding:0;
+  text-align:center;
+}
+
+li
+{
+  list-style:none;
+  display:inline-block;
+
+}
+
+#lika-a-picrew
+{
+  position:relative;
+  width:600px;
+}
+
+#lika-a-picrew a
+{
+  cursor:pointer;
+}
+
+#part-container
+{
+  position:absolute;
+  right:0;
+  top:0;
+  width:160px;
+  display:none;
+}
+
+#part-container li
+{
+  display:none;
+}
+
+#part-container li img
+{
+  max-width:100%;
+}
+
+#source-container
+{
+  position:relative;
+}
+
+#source-container .part-on
+{
+  position:absolute;
+}
+
+/*여기는 예제용 css*/
+ul
+{
+    background:skyblue;
+}
+
+li
+{
+  padding:12px;
+  width:36px;
+  text-align:center;
+  background:white;
+  border-radius:4px;
+  margin:4px;
+}
+
+.chara-base
+{
+	z-index:-1;
+}
+
+.chara-hair
+{
+	z-index:5;
+	top:0;
+	left:0;
+}
+
+.chara-eyes
+{
+	z-index:4;
+	top:0;
+	left:0;
+}
+
+
+    </style>
+ </head>
+
+    <body>
+
+<div id="lika-a-picrew">
+
+  <div id="source-container">
+    <img class="chara-base" src="./img/base_01.png"/>
+    <img data-value="hair" class="chara-hair part-on chara-parts" src="./img/hair_01.png">
+    <img data-value="eyes" class="chara-eyes part-on chara-parts" src="./img/eyes_01.png">
+  </div>
+
+  <ul id="part-ui"> <!-- 파트 목록 출력 UI -->
+    <li><a class="hair">머리</a></li>
+    <li><a class="eyes">눈</a></li>
+    <li><a class="clothes">옷</a></li>
+    <li><a class="add">추가</a></li>
+  </ul>
+
+  <ul id="part-container"> <!-- 파트 내용 출력 UI -->
+    <li class="hair button"><img src="./img/hairnail_01.png"></li>
+    <li class="hair button"><img src="./img/hairnail_02.png"></li>
+    <li class="eyes button"><img src="./img/eyesnail_01.png"></li>
+    <li class="eyes button"><img src="./img/eyesnail_02.png"></li>   
+  </ul>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script>
+$("#part-ui a").on("click", function() {
+  $("#part-container li").hide();  // 모든 파트를 숨깁니다.
+  $("#part-container").show();  // 파트 컨테이너를 보여줍니다.
+  var clss = $(this).attr("class");  // 클릭된 항목의 클래스를 가져옵니다.
+  $("#part-container ." + clss).show();  // 해당 클래스에 맞는 파트만 보여줍니다.
+});
+</script>
+
+
+<script type="text/javascript">
+
+const charaParts = [...document.querySelectorAll(".chara-parts")];
+
+function partsImgChange(id, index) {
+    const partsImg = charaParts.find(element => element.dataset.value == id)
+    partsImg.src = `./img/${id}_0${index}.png`
+}	
+
+function button(id) {
+    if (id == "hair") {
+        partsImgChange(id, hairIndex);   
+    }
+
+    if (id == "eyes") {
+        partsImgChange(id, eyesIndex);
+    }
+ }
+
+document.querySelector(".button").addEventListener("click", () => {
+    const id = charaCustom.id;
+    button(id)
+})
+
+
+function thumbUrl(id) {
+    if (id == "hair") {
+        thumb.src = `img/character/${id}_0${hairIndex}.png`
+    }
+    if (id == "eyes") {
+        thumb.src = `img/character/${id}_0${eyesIndex}.png`
+}
+
+
+</script>
+
+   </body>
+
+
+
+
+</html>
