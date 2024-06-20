@@ -773,6 +773,7 @@ $(document).ready(function() {
 });
 
 //필터 버튼 클릭 이벤트
+//필터 버튼 클릭 이벤트
 
         let currentFilter = ""; // 현재 적용된 필터
 
@@ -805,11 +806,9 @@ $(document).ready(function() {
             let taillineImg = $("#source-container img.chara-tailline");
 
             tailImg.attr("src", newSrc1);
-            taillineImg.attr("src", newSrc2);
 
             // 변경된 이미지를 필터 적용
             applyFilter('tail', currentFilter);
-            applyFilter('tailline', currentFilter);
         });
 
         // tail-color 버튼 클릭 이벤트
@@ -825,10 +824,7 @@ $(document).ready(function() {
 
             // 현재 적용된 필터를 tail와 tailline 이미지에 적용
             applyFilter('tail', currentFilter);
-            applyFilter('tailline', currentFilter);
         });
-
-
 
 
    function capture() {
